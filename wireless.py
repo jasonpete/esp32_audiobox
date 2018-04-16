@@ -3,7 +3,7 @@ import network
 import utime
 
 SSID = "YOUR WIFI SSID"
-PASSWORD = "YOUR PASSWORD"
+PASSWORD = "YOUR WIFI PASSWORD"
 
 def do_connect():
     wlan = network.WLAN(network.STA_IF)
