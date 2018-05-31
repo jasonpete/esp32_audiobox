@@ -8,6 +8,7 @@ DEVICEID = 'bugaosuni'
 APIKEY = 'zheshimimi'
 host = 'www.bigiot.net'
 port = 8181
+DATAAPI = '1234'
 
 previous_sw = Pin(25,Pin.OUT,value = 0)
 next_sw = Pin(26,Pin.OUT,value = 0)
@@ -45,6 +46,8 @@ def process(msg,s,checkinBytes):
             else:
                 power_sw.value(1)
                 say(s,msg['ID'],'Power On!')
+            utime.sleep(2)
+            swstatedata()
         if msg['C'] == "forward":
             next_sw.value(1)
             utime.sleep_ms(450)
@@ -61,7 +64,12 @@ def process(msg,s,checkinBytes):
             previous_sw.value(1)
             utime.sleep_ms(1400)
             previous_sw.value(0)
-            
+
+def swstatedata():
+    POWERSTATE = str(power_sw.value())
+    sw_state = bytes('{\"M\":\"update\",\"ID\":\"'+DEVICEID+'\",\"V\":{\"'+DATAAPI+'\":\"'+POWERSTATE+'\"}}\n','utf8')
+    s.send(sw_state)
+
 def say(s,id,content):
     sayBytes = bytes('{\"M\":\"say\",\"ID\":\"'+id+'\",\"C\":\"'+content+'\"}\n','utf8')
     print(sayBytes)
